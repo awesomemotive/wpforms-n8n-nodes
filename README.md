@@ -1,12 +1,8 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+## n8n WPForms Trigger node
 
-# n8n-nodes-starter
+NPM package name: `n8n-nodes-wpforms`
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
-
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
-
-If you would like your node to be available on n8n cloud you can also [submit your node for verification](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+This repository contains custom n8n nodes for WPForms integration, providing triggers and actions to automate workflows with WPForms data.
 
 ## Prerequisites
 
@@ -20,24 +16,89 @@ You need the following installed on your development machine:
   ```
 * Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
 
-## Using this starter
+## Build and Install the Node Package 📦
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+### 1. Install Dependencies
+```bash
+npm install
+```
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+### 2. Build the Project
+```bash
+npm run build
+```
+This command will:
+- Clean the `dist` directory
+- Compile TypeScript files
+- Build icons using gulp
+- Generate the distributable files
+
+### 3. Link the Package Locally
+```bash
+npm link
+```
+
+### 4. Set Up Custom Nodes Directory
+```bash
+# Create custom directory in n8n home
+mkdir -p ~/.n8n/custom
+cd ~/.n8n/custom
+
+# Initialize npm in the custom directory
+npm init -y
+```
+
+### 5. Link Node to n8n Instance
+```bash
+# Link your custom node to n8n (run from ~/.n8n/custom)
+npm link n8n-nodes-wpforms
+```
+
+### 6. Configure n8n Environment
+Set the environment variable to tell n8n where to find custom nodes:
+
+**For Linux/Mac:**
+```bash
+export N8N_CUSTOM_EXTENSIONS="$HOME/.n8n/custom"
+```
+
+**For Windows (PowerShell):**
+```powershell
+$env:N8N_CUSTOM_EXTENSIONS="$HOME\.n8n\custom"
+```
+
+### 7. Start n8n
+```bash
+n8n start
+```
+
+### 8. Verify Installation
+1. Open n8n in your browser (usually `http://localhost:5678`)
+2. Look for your custom nodes in the node palette
+3. You should see "WPForms" nodes available
+
+## Development Workflow 🔧
+
+For ongoing development:
+
+```bash
+# Watch for changes during development
+npm run dev
+
+# Build and link after changes
+npm run build
+npm link
+```
+
+## Testing Your Node 🧪
+
+```bash
+# Check for linting errors
+npm run lint
+
+# Auto-fix linting errors when possible
+npm run lintfix
+```
 
 ## More information
 
