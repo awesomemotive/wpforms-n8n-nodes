@@ -1,9 +1,12 @@
+import { createHmac } from 'crypto';
 import {
+	IDataObject,
 	INodeType,
 	INodeTypeDescription,
 	IWebhookFunctions,
 	IWebhookResponseData,
 	NodeConnectionType,
+	NodeApiError,
 } from 'n8n-workflow';
 
 export class WpformsTrigger implements INodeType {
@@ -24,22 +27,91 @@ export class WpformsTrigger implements INodeType {
 				name: 'default',
 				isWebhook: true,
 				httpMethod: 'POST',
-				responseMode: 'onReceived', // 'onReceived' sends a 200 OK response immediately
+				responseMode: 'onReceived',
 				path: 'webhook',
 			},
 		],
 		properties: [
-			// This node does not need any properties. 
-			// The webhook URL is displayed on the node itself.
+			{
+				displayName: 'Secret Key',
+				name: 'scrKey',
+				type: 'string',
+				default: '',
+				required: true,
+				description: 'The secret key used to verify the HMAC-SHA256 signature of the request',
+			},
+			{
+				displayName: 'Timestamp Skew',
+				name: 'timestampSkew',
+				type: 'number',
+				default: 300,
+				description: 'The allowed time difference in seconds between the server and the client',
+			},
+			{
+				displayName: 'Output Schema',
+				name: 'outputSchema',
+				type: 'options',
+				options: [
+					{
+						name: 'Default',
+						value: 'default',
+					},
+					{
+						name: 'Raw',
+						value: 'raw',
+					},
+				],
+				default: 'default',
+				description: 'Choose the output format of the trigger',
+			},
 		],
 	};
 
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
 		const req = this.getRequestObject();
+		const secretKey = this.getNodeParameter('scrKey') as string;
+		const timestampSkew = this.getNodeParameter('timestampSkew') as number;
+		const outputSchema = this.getNodeParameter('outputSchema') as string;
+
+		const signature = req.headers['x-wpforms-signature'] as string;
+		const timestamp = req.headers['x-wpforms-timestamp'] as string;
+
+		if (!signature || !timestamp) {
+			throw new NodeApiError(this.getNode(), { message: 'Missing signature or timestamp headers' });
+		}
+
+		const now = Math.floor(Date.now() / 1000);
+		const timeDifference = Math.abs(now - parseInt(timestamp, 10));
+
+		if (timeDifference > timestampSkew) {
+			throw new NodeApiError(this.getNode(), { message: 'Timestamp is outside the allowed skew' });
+		}
+
+		const hmac = createHmac('sha256', secretKey);
+		hmac.update(JSON.stringify(req.body));
+		const expectedSignature = `sha256=${hmac.digest('hex')}`;
+
+		if (signature !== expectedSignature) {
+			throw new NodeApiError(this.getNode(), { message: 'Invalid signature' });
+		}
+
+		if (outputSchema === 'raw') {
+			return {
+				workflowData: [
+					[
+						{
+							json: {
+								body: req.body,
+								headers: req.headers,
+							},
+						},
+					],
+				],
+			};
+		}
+
 		return {
-			workflowData: [
-				this.helpers.returnJsonArray(req.body)
-			],
+			workflowData: [this.helpers.returnJsonArray(req.body as IDataObject[])],
 		};
 	}
 }

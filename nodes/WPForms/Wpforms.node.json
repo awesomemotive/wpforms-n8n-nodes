@@ -1,17 +1,12 @@
 {
-	"node": "n8n-nodes-base.wpforms",
+	"node": "n8n-nodes-wpforms.wpformsTrigger",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
-	"categories": ["Development", "Developer Tools"],
+	"categories": ["Trigger", "Forms"],
 	"resources": {
-		"credentialDocumentation": [
-			{
-				"url": "http://httpbin.org/#/Auth/get_bearer"
-			}
-		],
 		"primaryDocumentation": [
 			{
-				"url": "http://httpbin.org/"
+				"url": "https://github.com/awesomemotive/wpforms-n8n-nodes"
 			}
 		]
 	}

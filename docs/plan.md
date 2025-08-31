@@ -1,34 +1,37 @@
-# n8n WPForms Trigger Node Implementation Plan
+# n8n WPForms Trigger Node Implementation Summary
 
-This document outlines the tasks required to implement the WPForms trigger node for n8n.
+This document summarizes the final implementation of the WPForms trigger node for n8n.
 
-## 1. Credentials Setup
+## 1. Node Properties
 
-- [x] Create a new credential type for WPForms API.
-- [x] Define properties for Site URL, Consumer Key, and Consumer Secret.
-- [x] Implement the authentication logic.
-- [x] Implement a test method for the credentials.
+The trigger node has the following properties:
 
-## 2. Trigger Node Implementation
+- **Secret Key**: A required string to verify the HMAC-SHA256 signature of the request.
+- **Timestamp Skew**: An optional number (default: 300s) for the allowed time difference.
+- **Output Schema**: An optional dropdown ('Default' or 'Raw') to control the output format.
 
-- [ ] Update `WpformsTrigger.node.ts` to use the new credentials.
-- [ ] Implement `webhookMethods` for creating and deleting webhooks on the WordPress site.
-- [ ] Implement methods to fetch a list of forms from WPForms to allow users to select a specific form.
-- [ ] Add a `forms` resource to the node properties to display a dropdown of available forms.
-- [ ] Modify the `webhook` method to process and format the incoming data from WPForms.
+## 2. Webhook Verification
 
-## 3. Supporting Files and Configuration
+The node's webhook performs the following checks on incoming POST requests:
 
-- [ ] Update `nodes/WPForms/Wpforms.node.json` with correct information.
-- [ ] Update `package.json` with any new dependencies.
+- Verifies the presence of `X-WPForms-Signature` and `X-WPForms-Timestamp` headers.
+- Validates the timestamp against the configured skew.
+- Validates the HMAC-SHA256 signature using the provided `Secret Key`.
 
-## 4. Documentation
+## 3. Output
 
-- [ ] Update `README.md` with instructions on how to set up and use the WPForms trigger node.
-- [ ] Add documentation for the new credentials.
+- **Default**: Outputs a structured JSON object of the form submission data.
+- **Raw**: Outputs the raw request body and headers.
 
-## 5. Testing
+## 4. Manual Testing Guide
 
-- [ ] Create a test workflow to verify the trigger functionality.
-- [ ] Test webhook registration and de-registration.
-- [ ] Test with different form submissions to ensure data is correctly received and processed.
+1.  **Build the node:** Run `npm run build`.
+2.  **Install the node:** Follow the instructions in the `README.md`.
+3.  **Create a test workflow:**
+    *   Add the WPForms Trigger node and configure its properties.
+    *   Copy the webhook URL.
+4.  **Configure WPForms:**
+    *   In your WordPress site, paste the webhook URL and the secret key into the WPForms n8n addon settings for a specific form.
+5.  **Test the trigger:**
+    *   Submit the form.
+    *   Check the n8n workflow to verify the trigger received the data correctly.
