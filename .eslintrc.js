@@ -18,7 +18,7 @@ module.exports = {
 		extraFileExtensions: ['.json'],
 	},
 
-	ignorePatterns: ['.eslintrc.js', '**/*.js', '**/node_modules/**', '**/dist/**'],
+	ignorePatterns: ['.eslintrc.js', '**/*.js', '**/node_modules/**', '**/dist/**', '**/docs/**'],
 
 	overrides: [
 		{
@@ -74,7 +74,6 @@ module.exports = {
 				'n8n-nodes-base/node-param-default-missing': 'error',
 				'n8n-nodes-base/node-param-default-wrong-for-boolean': 'error',
 				'n8n-nodes-base/node-param-default-wrong-for-collection': 'error',
-				'n8n-nodes-base/node-param-default-wrong-for-fixed-collection': 'error',
 				'n8n-nodes-base/node-param-default-wrong-for-fixed-collection': 'error',
 				'n8n-nodes-base/node-param-default-wrong-for-multi-options': 'error',
 				'n8n-nodes-base/node-param-default-wrong-for-number': 'error',
