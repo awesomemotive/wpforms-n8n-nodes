@@ -9,11 +9,12 @@ import {
 	NodeApiError,
 } from 'n8n-workflow';
 import { isValidated } from './validation';
+import helpers from './helpers';
 
 /**
  * WPForms Trigger node.
  *
- * @since 0.1.0
+ * @since 1.0
  */
 export class WpformsTrigger implements INodeType {
 	description: INodeTypeDescription = {
@@ -100,18 +101,7 @@ export class WpformsTrigger implements INodeType {
 
 		// If a user wants raw output, emit the raw body and headers
 		if (outputSchema === 'raw') {
-			return {
-				workflowData: [
-					[
-						{
-							json: {
-								body: request.body,
-								headers: request.headers,
-							},
-						},
-					],
-				],
-			};
+			return helpers.getRawOutput(request);
 		}
 
 		// Default: emit parsed JSON items for downstream nodes
