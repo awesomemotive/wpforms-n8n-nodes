@@ -9,11 +9,16 @@ import {
 	NodeApiError,
 } from 'n8n-workflow';
 
+/**
+ * WPForms Trigger node.
+ *
+ * @since 0.1.0
+ */
 export class WpformsTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'WPForms Trigger',
 		name: 'wpformsTrigger',
-		icon: 'file:wpforms.svg',
+		icon: 'file:sullie.svg',
 		group: ['trigger'],
 		version: 1,
 		description: 'Starts a workflow when a WPForms form is submitted',
@@ -57,7 +62,7 @@ export class WpformsTrigger implements INodeType {
 				],
 				default: 'default',
 				description: 'Choose the output format of the trigger',
-				hint: `Default: Emits 1 item per submission with properties: <code>form</code>, <code>entry</code>, <code>fields</code>, <code>files</code>, <code>meta</code>.<br>
+				hint: `Default: Emits 1 item per submission with properties: <code>form, entry</code>, <code>fields</code>, <code>files</code>, <code>meta</code>.<br>
 					Raw: Emits 1 item per submission with properties: <code>body</code> (raw JSON string), <code>headers</code> (object). <a href="https://wpforms.com/docs/n8n/">Read more</a>`,
 			},
 			{
@@ -70,42 +75,75 @@ export class WpformsTrigger implements INodeType {
 		],
 	};
 
+	/**
+	 * Implement webhook listener.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return {Promise<IWebhookResponseData>} The node response data.
+	 */
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
-		const req = this.getRequestObject();
+		// Access the raw HTTP request from n8n's webhook context
+		const request = this.getRequestObject();
+		// Node parameters configured by the user in the UI
 		const secretKey = this.getNodeParameter('scrKey') as string;
 		const timestampSkew = this.getNodeParameter('timestampSkew') as number;
 		const outputSchema = this.getNodeParameter('outputSchema') as string;
 
-		const signature = req.headers['x-wpforms-signature'] as string;
-		const timestamp = req.headers['x-wpforms-timestamp'] as string;
+		// WPForms sends HMAC signature and a timestamp in request headers
+		const signature = request.headers['x-wpforms-signature'] as string;
+		const timestamp = request.headers['x-wpforms-timestamp'] as string;
 
+		// Basic header presence validation
 		if (!signature || !timestamp) {
-			throw new NodeApiError(this.getNode(), { message: 'Missing signature or timestamp headers' });
+			throw new NodeApiError(this.getNode(), {
+				message: 'Missing signature or timestamp headers',
+				httpCode: 403,
+			});
 		}
 
-		const now = Math.floor(Date.now() / 1000);
-		const timeDifference = Math.abs(now - parseInt(timestamp, 10));
+		// Timestamp skew validation to prevent replay attacks
+		// Note: WPForms provides seconds; here we compare as provided by the request
+		const now = Date.now();
+		const timestampInt = parseInt(timestamp, 10);
+		const timeDifference = Math.abs(now - timestampInt);
 
 		if (timeDifference > timestampSkew) {
-			throw new NodeApiError(this.getNode(), { message: 'Timestamp is outside the allowed skew' });
+			const message = `Timestamp is outside the allowed ${ timestampSkew }s skew.`;
+			const data = JSON.stringify( { now, timestampInt, timeDifference }  );
+
+			throw new NodeApiError(this.getNode(), {
+				message: message + ' ' + data,
+				description: message,
+				httpCode: 403,
+			});
 		}
 
+		// Compute expected HMAC of the body using the shared secret
 		const hmac = createHmac('sha256', secretKey);
-		hmac.update(JSON.stringify(req.body));
-		const expectedSignature = `sha256=${hmac.digest('hex')}`;
+		hmac.update(JSON.stringify(request.body));
+		const expectedSignature = hmac.digest('hex');
 
+		// Compare signatures to ensure payload integrity and authenticity
 		if (signature !== expectedSignature) {
-			throw new NodeApiError(this.getNode(), { message: 'Invalid signature' });
+			const message = `Invalid signature.`;
+
+			throw new NodeApiError(this.getNode(), {
+				message: message + ' ' + JSON.stringify({ signature, expectedSignature }),
+				description: message,
+				httpCode: 403,
+			});
 		}
 
+		// If a user wants raw output, emit the raw body and headers
 		if (outputSchema === 'raw') {
 			return {
 				workflowData: [
 					[
 						{
 							json: {
-								body: req.body,
-								headers: req.headers,
+								body: request.body,
+								headers: request.headers,
 							},
 						},
 					],
@@ -113,8 +151,9 @@ export class WpformsTrigger implements INodeType {
 			};
 		}
 
+		// Default: emit parsed JSON items for downstream nodes
 		return {
-			workflowData: [this.helpers.returnJsonArray(req.body as IDataObject[])],
+			workflowData: [this.helpers.returnJsonArray(request.body as IDataObject[])],
 		};
 	}
 }
