@@ -95,11 +95,7 @@ export class WpformsTrigger implements INodeType {
 		try {
 			isValidated(request, secretKey, timestampSkew);
 		} catch (err: any) {
-			throw new NodeApiError(this.getNode(), {
-				message: err?.message || 'Validation failed',
-				description: err?.description,
-				httpCode: err?.httpCode,
-			});
+			throw new NodeApiError(this.getNode(), err);
 		}
 
 		// If a user wants raw output, emit the raw body and headers
