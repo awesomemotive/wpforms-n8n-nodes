@@ -57,6 +57,8 @@ export class WpformsTrigger implements INodeType {
 				],
 				default: 'default',
 				description: 'Choose the output format of the trigger',
+				hint: `Default: Emits 1 item per submission with properties: <code>form</code>, <code>entry</code>, <code>fields</code>, <code>files</code>, <code>meta</code>.<br>
+					Raw: Emits 1 item per submission with properties: <code>body</code> (raw JSON string), <code>headers</code> (object). <a href="https://wpforms.com/docs/n8n/">Read more</a>`,
 			},
 			{
 				displayName: 'Timestamp Skew',
