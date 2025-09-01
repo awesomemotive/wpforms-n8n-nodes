@@ -1,4 +1,4 @@
-import { createHmac } from 'crypto';
+import { createHmac, randomBytes } from 'crypto';
 import {
 	IDataObject,
 	INodeType,
@@ -36,16 +36,10 @@ export class WpformsTrigger implements INodeType {
 				displayName: 'Secret Key',
 				name: 'scrKey',
 				type: 'string',
-				default: '',
+				default: randomBytes(16).toString('hex'),
 				required: true,
-				description: 'The secret key used to verify the HMAC-SHA256 signature of the request',
-			},
-			{
-				displayName: 'Timestamp Skew',
-				name: 'timestampSkew',
-				type: 'number',
-				default: 300,
-				description: 'The allowed time difference in seconds between the server and the client',
+				description: 'The secret key used to verify the request',
+				hint: 'Copy the value to your WPForms n8n settings. <a href="https://wpforms.com/docs/n8n/">Read more</a>',
 			},
 			{
 				displayName: 'Output Schema',
@@ -63,6 +57,13 @@ export class WpformsTrigger implements INodeType {
 				],
 				default: 'default',
 				description: 'Choose the output format of the trigger',
+			},
+			{
+				displayName: 'Timestamp Skew',
+				name: 'timestampSkew',
+				type: 'number',
+				default: 300,
+				description: 'The allowed time difference in seconds between the server and the client',
 			},
 		],
 	};
