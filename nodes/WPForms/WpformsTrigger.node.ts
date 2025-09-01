@@ -7,7 +7,7 @@ import {
 	NodeConnectionType,
 	NodeApiError,
 } from 'n8n-workflow';
-import { isValidated } from './validation';
+import { validateRequest } from './validation';
 import helpers from './helpers';
 
 /**
@@ -86,6 +86,7 @@ export class WpformsTrigger implements INodeType {
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
 		// Access the raw HTTP request from n8n's webhook context
 		const request = this.getRequestObject();
+
 		// Node parameters configured by the user in the UI
 		const secretKey = this.getNodeParameter('scrKey') as string;
 		const timestampSkew = this.getNodeParameter('timestampSkew') as number;
@@ -93,7 +94,7 @@ export class WpformsTrigger implements INodeType {
 
 		// Validate request headers, timestamp skew, and signature
 		try {
-			isValidated(request, secretKey, timestampSkew);
+			validateRequest(request, secretKey, timestampSkew);
 		} catch (err: any) {
 			throw new NodeApiError(this.getNode(), err);
 		}

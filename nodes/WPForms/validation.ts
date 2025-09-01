@@ -8,7 +8,7 @@ import { createHmac } from 'crypto';
  *
  * @since 0.1.0
  */
-export function isValidated(
+export function validateRequest(
 	request: any,
 	secretKey: string,
 	timestampSkew: number,
