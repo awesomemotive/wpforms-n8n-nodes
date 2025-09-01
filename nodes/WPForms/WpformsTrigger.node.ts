@@ -1,4 +1,4 @@
-import { createHmac, randomBytes } from 'crypto';
+import { randomBytes } from 'crypto';
 import {
 	IDataObject,
 	INodeType,
@@ -8,6 +8,7 @@ import {
 	NodeConnectionType,
 	NodeApiError,
 } from 'n8n-workflow';
+import { isValidated } from './validation';
 
 /**
  * WPForms Trigger node.
@@ -90,48 +91,14 @@ export class WpformsTrigger implements INodeType {
 		const timestampSkew = this.getNodeParameter('timestampSkew') as number;
 		const outputSchema = this.getNodeParameter('outputSchema') as string;
 
-		// WPForms sends HMAC signature and a timestamp in request headers
-		const signature = request.headers['x-wpforms-signature'] as string;
-		const timestamp = request.headers['x-wpforms-timestamp'] as string;
-
-		// Basic header presence validation
-		if (!signature || !timestamp) {
+		// Validate request headers, timestamp skew, and signature
+		try {
+			isValidated(request, secretKey, timestampSkew);
+		} catch (err: any) {
 			throw new NodeApiError(this.getNode(), {
-				message: 'Missing signature or timestamp headers',
-				httpCode: 403,
-			});
-		}
-
-		// Timestamp skew validation to prevent replay attacks
-		// Note: WPForms provides seconds; here we compare as provided by the request
-		const now = Date.now();
-		const timestampInt = parseInt(timestamp, 10);
-		const timeDifference = Math.abs(now - timestampInt);
-
-		if (timeDifference > timestampSkew) {
-			const message = `Timestamp is outside the allowed ${ timestampSkew }s skew.`;
-			const data = JSON.stringify( { now, timestampInt, timeDifference }  );
-
-			throw new NodeApiError(this.getNode(), {
-				message: message + ' ' + data,
-				description: message,
-				httpCode: 403,
-			});
-		}
-
-		// Compute expected HMAC of the body using the shared secret
-		const hmac = createHmac('sha256', secretKey);
-		hmac.update(JSON.stringify(request.body));
-		const expectedSignature = hmac.digest('hex');
-
-		// Compare signatures to ensure payload integrity and authenticity
-		if (signature !== expectedSignature) {
-			const message = `Invalid signature.`;
-
-			throw new NodeApiError(this.getNode(), {
-				message: message + ' ' + JSON.stringify({ signature, expectedSignature }),
-				description: message,
-				httpCode: 403,
+				message: err?.message || 'Validation failed',
+				description: err?.description,
+				httpCode: err?.httpCode,
 			});
 		}
 
