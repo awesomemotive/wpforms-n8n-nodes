@@ -1,6 +1,5 @@
 import { randomBytes } from 'crypto';
 import {
-	IDataObject,
 	INodeType,
 	INodeTypeDescription,
 	IWebhookFunctions,
@@ -104,9 +103,7 @@ export class WpformsTrigger implements INodeType {
 			return helpers.getRawOutput(request);
 		}
 
-		// Default: emit parsed JSON items for downstream nodes
-		return {
-			workflowData: [this.helpers.returnJsonArray(request.body as IDataObject[])],
-		};
+		// Default: emit parsed JSON items for downstream nodes via helpers
+		return helpers.getOutput(request, this);
 	}
 }
