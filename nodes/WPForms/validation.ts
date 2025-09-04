@@ -18,8 +18,11 @@ export function validateRequest(
 	const timestamp = request.headers['x-wpforms-timestamp'] as string;
 
 	if (!signature || !timestamp) {
-		const err: any = new Error('Missing signature or timestamp headers');
+		const message = 'Missing signature or timestamp headers';
+		const data = JSON.stringify( request.headers );
+		const err: any = new Error(message + ' ' + data);
 
+		err.description = message;
 		err.httpCode = 403;
 
 		throw err;
