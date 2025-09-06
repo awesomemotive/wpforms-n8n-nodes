@@ -17,15 +17,30 @@ export function validateRequest(
 	const signature = request.headers['x-wpforms-signature'] as string;
 	const timestamp = request.headers['x-wpforms-timestamp'] as string;
 
-	if (!signature || !timestamp) {
-		const message = 'Missing signature or timestamp headers';
-		const data = JSON.stringify( request.headers );
-		const err: any = new Error(message + ' ' + data);
+	/**
+	 *
+	 *
+	 * @param message
+	 * @param data
+	 */
+	function throwError(
+		message: string,
+		data: Object,
+	) {
+		const err: any = new Error(message);
 
-		err.description = message;
+		err.message = message;
+		err.data = data;
 		err.httpCode = 403;
 
 		throw err;
+	}
+
+	if (!signature || !timestamp) {
+		throwError(
+			'Missing signature or timestamp headers',
+			{ signature, timestamp }
+		);
 	}
 
 	// Skew validation (compare values as provided by the request)
@@ -34,14 +49,10 @@ export function validateRequest(
 	const timeDifference = Math.abs(now - timestampInt);
 
 	if (timeDifference > timestampSkew) {
-		const message = `Timestamp is outside the allowed ${ timestampSkew }s skew.`;
-		const data = JSON.stringify({ now, timestampInt, timeDifference });
-		const err: any = new Error(message + ' ' + data);
-
-		err.description = message;
-		err.httpCode = 403;
-
-		throw err;
+		throwError(
+			`Timestamp is outside the allowed ${ timestampSkew }s skew.`,
+			{ now, timestampInt, timeDifference }
+		);
 	}
 
 	// Compute expected HMAC of the body using the shared secret
@@ -51,14 +62,10 @@ export function validateRequest(
 
 	// Compare signatures for integrity and authenticity
 	if (signature !== expectedSignature) {
-		const message = 'Invalid signature.';
-		const data = JSON.stringify({ signature, expectedSignature });
-		const err: any = new Error(message + ' ' + data);
-
-		err.description = message;
-		err.httpCode = 403;
-
-		throw err;
+		throwError(
+			'Invalid signature.',
+			{ signature, expectedSignature }
+		);
 	}
 
 	return true;

@@ -4,7 +4,10 @@
   "description": "n8n WPForms Trigger node",
   "keywords": [
     "n8n-community-node-package",
-    "wpforms"
+    "WPForms",
+    "WordPress",
+    "form",
+    "form submission"
   ],
   "license": "MIT",
   "homepage": "",

@@ -5,7 +5,6 @@ import {
 	IWebhookFunctions,
 	IWebhookResponseData,
 	NodeConnectionType,
-	NodeApiError,
 } from 'n8n-workflow';
 import { validateRequest } from './validation';
 import helpers from './helpers';
@@ -63,8 +62,8 @@ export class WpformsTrigger implements INodeType {
 				],
 				default: 'default',
 				description: 'Choose the output format of the trigger',
-				hint: `Default: Emits 1 item per submission with properties: <code>form, entry</code>, <code>fields</code>, <code>files</code>, <code>meta</code>.<br>
-					Raw: Emits 1 item per submission with properties: <code>body</code> (raw JSON string), <code>headers</code> (object). <a href="https://wpforms.com/docs/n8n/">Read more</a>`,
+				hint: `Default: Emits 1 item with properties: <code>form, entry, fields, files, meta</code>.<br>
+					Raw: Emits 1 item with properties: <code>body, headers</code>. <a href="https://wpforms.com/docs/n8n/">Read more</a>`,
 			},
 			{
 				displayName: 'Timestamp Skew',
@@ -96,7 +95,7 @@ export class WpformsTrigger implements INodeType {
 		try {
 			validateRequest(request, secretKey, timestampSkew);
 		} catch (err: any) {
-			throw new NodeApiError(this.getNode(), err);
+			return helpers.getErrorOutput(err, this);
 		}
 
 		// If a user wants raw output, emit the raw body and headers

@@ -32,6 +32,8 @@ export default {
 	/**
 	 * Get the raw output response.
 	 *
+	 * @since 1.0
+	 *
 	 * @param {Request} request HTTP request object.
 	 *
 	 * @return Promise<IWebhookResponseData>
@@ -45,6 +47,43 @@ export default {
 							body: request.body,
 							headers: request.headers,
 						},
+					},
+				],
+			],
+		};
+	},
+
+	/**
+	 * Send a controlled error response for webhooks and stop n8n from overriding it.
+	 *
+	 * @since 1.0
+	 *
+	 * @param {any} err Error object possibly containing httpCode, message, description
+	 * @param {IWebhookFunctions} node Node context to access Express response
+	 *
+	 * @return Promise<IWebhookResponseData>
+	 */
+	async getErrorOutput(err: any, node: IWebhookFunctions): Promise<IWebhookResponseData> {
+		const code = Number(err?.httpCode) || 400;
+		const res = node.getResponseObject();
+		const body = {
+			message: err?.message ?? 'Bad Request',
+			description: err?.description,
+			data: err?.data,
+		};
+
+		try {
+			res.status(code).json(body);
+		} catch (_) {
+			res.status(code).send(body.message);
+		}
+
+		return {
+			noWebhookResponse: true,
+			workflowData: [
+				[
+					{
+						json: body,
 					},
 				],
 			],
