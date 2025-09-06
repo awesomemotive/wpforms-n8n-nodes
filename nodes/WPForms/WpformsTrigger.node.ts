@@ -78,7 +78,7 @@ export class WpformsTrigger implements INodeType {
 	/**
 	 * Implement webhook listener.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @return {Promise<IWebhookResponseData>} The node response data.
 	 */

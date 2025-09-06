@@ -74,7 +74,7 @@ export default {
 
 		try {
 			res.status(code).json(body);
-		} catch (_) {
+		} catch (err) {
 			res.status(code).send(body.message);
 		}
 
