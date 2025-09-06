@@ -6,7 +6,7 @@ import { createHmac } from 'crypto';
  *
  * Throws NodeApiError on validation failure.
  *
- * @since 0.1.0
+ * @since 1.0
  */
 export function validateRequest(
 	request: any,
@@ -18,10 +18,12 @@ export function validateRequest(
 	const timestamp = request.headers['x-wpforms-timestamp'] as string;
 
 	/**
+	 * Throw the error with the given message and data.
 	 *
+	 * @since 1.0
 	 *
-	 * @param message
-	 * @param data
+	 * @param {string} message Error message.
+	 * @param {Object} data Error data.
 	 */
 	function throwError(
 		message: string,
