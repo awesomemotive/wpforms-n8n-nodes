@@ -59,14 +59,15 @@ export function validateRequest(
 
 	// Compute expected HMAC of the body using the shared secret
 	const hmac = createHmac('sha256', secretKey);
-	hmac.update(JSON.stringify(request.body));
+	const bodyJson = JSON.stringify(request.body).replace(/\//g, '\\/');
+	hmac.update(bodyJson);
 	const expectedSignature = hmac.digest('hex');
 
 	// Compare signatures for integrity and authenticity
 	if (signature !== expectedSignature) {
 		throwError(
 			'Invalid signature.',
-			{ signature, expectedSignature }
+			{ signature, expectedSignature, secretKey, bodyJson }
 		);
 	}
 
