@@ -67,7 +67,7 @@ export function validateRequest(
 	if (signature !== expectedSignature) {
 		throwError(
 			'Invalid signature.',
-			{ signature, expectedSignature, secretKey, bodyJson }
+			{ signature, expectedSignature }
 		);
 	}
 

@@ -24,8 +24,12 @@ export default {
 	 * @return Promise<IWebhookResponseData>
 	 */
 	async getOutput(request: any, node: IWebhookFunctions): Promise<IWebhookResponseData> {
+		const data = node.helpers.returnJsonArray(request.body as IDataObject[]);
+
+		data[0].json.success = true;
+
 		return {
-			workflowData: [node.helpers.returnJsonArray(request.body as IDataObject[])],
+			workflowData: [data],
 		};
 	},
 
@@ -44,7 +48,9 @@ export default {
 				[
 					{
 						json: {
-							body: request.body,
+						  success: true,
+							// Original request body as JSON string.
+							body: JSON.stringify(request.body).replace(/\//g, '\\/'),
 							headers: request.headers,
 						},
 					},
@@ -67,6 +73,7 @@ export default {
 		const code = Number(err?.httpCode) || 400;
 		const res = node.getResponseObject();
 		const body = {
+			success: false,
 			message: err?.message ?? 'Bad Request',
 			description: err?.description,
 			data: err?.data,
