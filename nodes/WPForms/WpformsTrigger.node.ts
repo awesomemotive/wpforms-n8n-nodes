@@ -1,4 +1,3 @@
-import { randomBytes } from 'crypto';
 import {
 	INodeType,
 	INodeTypeDescription,
@@ -7,7 +6,7 @@ import {
 	NodeConnectionType,
 } from 'n8n-workflow';
 import { validateRequest } from './validation';
-import helpers from './helpers';
+import output from './output';
 
 /**
  * WPForms Trigger node.
@@ -25,7 +24,7 @@ export class WpformsTrigger implements INodeType {
 		defaults: {
 			name: 'WPForms Trigger',
 		},
-		inputs: [], // Trigger nodes have no inputs
+		inputs: [], // Trigger nodes have no inputs.
 		outputs: [NodeConnectionType.Main],
 		webhooks: [
 			{
@@ -41,10 +40,10 @@ export class WpformsTrigger implements INodeType {
 				displayName: 'Secret Key',
 				name: 'scrKey',
 				type: 'string',
-				default: randomBytes(16).toString('hex'),
+				default: '',
 				required: true,
 				description: 'The secret key used to verify the request',
-				hint: 'Copy the value to your WPForms n8n settings. <a href="https://wpforms.com/docs/n8n/">Read more</a>',
+				hint: 'Copy the value from your WPForms n8n settings. <a href="https://wpforms.com/docs/n8n/">Read more</a>',
 			},
 			{
 				displayName: 'Output Schema',
@@ -83,7 +82,7 @@ export class WpformsTrigger implements INodeType {
 	 * @return {Promise<IWebhookResponseData>} The node response data.
 	 */
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
-		// Access the raw HTTP request from n8n's webhook context
+		// Access the raw HTTP request from n8n's webhook context.
 		const request = this.getRequestObject();
 
 		// Node parameters configured by the user in the UI
@@ -91,19 +90,19 @@ export class WpformsTrigger implements INodeType {
 		const timestampSkew = this.getNodeParameter('timestampSkew') as number;
 		const outputSchema = this.getNodeParameter('outputSchema') as string;
 
-		// Validate request headers, timestamp skew, and signature
+		// Validate request headers, timestamp skew, and signature.
 		try {
 			validateRequest(request, secretKey, timestampSkew);
 		} catch (err: any) {
-			return helpers.getErrorOutput(err, this);
+			return output.getErrorOutput(err, this);
 		}
 
-		// If a user wants raw output, emit the raw body and headers
+		// If a user wants raw output, emit the raw body and headers.
 		if (outputSchema === 'raw') {
-			return helpers.getRawOutput(request);
+			return output.getRawOutput(request);
 		}
 
-		// Default: emit parsed JSON items for downstream nodes via helpers
-		return helpers.getOutput(request, this);
+		// Default: emit parsed JSON items for downstream nodes via helpers.
+		return output.getOutput(request, this);
 	}
 }
