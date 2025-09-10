@@ -97,12 +97,14 @@ n8n start
 1.  In your n8n workflow, add the **WPForms Trigger** node.
 2.  Configure the node settings:
     *   **Secret Key**: Enter a secret key. This key must match the secret key configured in your WPForms n8n addon settings. It is used to verify the integrity of the data received.
-    *   **Timestamp Skew**: (Optional) Set the allowed time difference in seconds between your server and the WPForms server. The default is 300 seconds.
-    *   **Output Schema**: (Optional) Choose the output format. 'Default' provides a structured JSON object, while 'Raw' provides the raw request body and headers.
+    *   **Timestamp Skew**: Set the allowed time difference in seconds between your server and the WPForms server. The default is 300 seconds.
+    *   **Output Schema**: Choose the output format. 'Default' provides a structured JSON object, while 'Raw' provides the raw request body and headers.
 3.  The node will display a webhook URL. Copy this URL.
-4.  In your WordPress admin, go to the settings for the WPForms form you want to use as a trigger.
-5.  Go to the **Webhooks** tab and paste the webhook URL from n8n.
-6.  Save your form settings.
+4.  In the Form Builder, go to the Marketing > n8n tab.
+5.  Enable n8n integration.
+6.  Paste the webhook URL from n8n.
+7.  Copy Secret Key and paste it to the WPForms Trigger node.
+8.  Save your form settings.
 
 ### Usage
 
@@ -117,8 +119,7 @@ For ongoing development:
 npm run dev
 
 # Build and link after changes
-npm run build
-npm link
+npm run build && npm link
 ```
 
 ## Testing Your Node 
