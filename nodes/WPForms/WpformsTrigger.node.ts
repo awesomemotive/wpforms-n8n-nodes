@@ -61,7 +61,7 @@ export class WpformsTrigger implements INodeType {
 				],
 				default: 'default',
 				description: 'Choose the output format of the trigger',
-				hint: `Default: Emits 1 item with properties: <code>form, entry, fields, files, meta</code>.<br>
+				hint: `Default: Emits 1 item with properties: <code>form, entry, fields, meta</code>.<br>
 					Raw: Emits 1 item with properties: <code>body, headers</code>. <a href="https://wpforms.com/docs/n8n/">Read more</a>`,
 			},
 			{
