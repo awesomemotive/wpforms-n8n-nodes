@@ -81,7 +81,7 @@ n8n start
 
 ### Prerequisites
 
-- A self-hosted WordPress site with the WPForms plugin installed and activated.
+- A WordPress site with the WPForms plugin + WPForms n8n addon installed and activated.
 - An n8n instance.
 
 ### Installation
