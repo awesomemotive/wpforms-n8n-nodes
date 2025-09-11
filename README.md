@@ -16,7 +16,7 @@ You need the following installed on your development machine:
   ```
 * Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
 
-## Build and Install the Node Package 
+## Build and Install the Node Package
 
 ### 1. Install Dependencies
 ```bash
