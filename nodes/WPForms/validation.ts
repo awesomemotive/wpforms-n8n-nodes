@@ -4,7 +4,7 @@ import { createHmac } from 'crypto';
  * Validate WPForms webhook request by checking required headers, timestamp skew,
  * and HMAC-SHA256 signature using the provided secret.
  *
- * Throws NodeApiError on validation failure.
+ * Throws Error on validation failure.
  *
  * @since 1.0
  */
@@ -13,7 +13,7 @@ export function validateRequest(
 	secretKey: string,
 	timestampSkew: number,
 ): boolean {
-	// Header presence validation
+	// Header presence validation.
 	const signature = request.headers['x-wpforms-signature'] as string;
 	const timestamp = request.headers['x-wpforms-timestamp'] as string;
 
@@ -45,7 +45,7 @@ export function validateRequest(
 		);
 	}
 
-	// Skew validation (compare values as provided by the request)
+	// Skew validation (compare values as provided by the request).
 	const now = Date.now();
 	const timestampInt = parseInt(timestamp, 10);
 	const timeDifference = Math.abs(now - timestampInt);
@@ -57,13 +57,13 @@ export function validateRequest(
 		);
 	}
 
-	// Compute expected HMAC of the body using the shared secret
+	// Compute expected HMAC of the body using the shared secret.
 	const hmac = createHmac('sha256', secretKey);
 	const bodyJson = JSON.stringify(request.body).replace(/\//g, '\\/');
 	hmac.update(bodyJson);
 	const expectedSignature = hmac.digest('hex');
 
-	// Compare signatures for integrity and authenticity
+	// Compare signatures for integrity and authenticity.
 	if (signature !== expectedSignature) {
 		throwError(
 			'Invalid signature.',
