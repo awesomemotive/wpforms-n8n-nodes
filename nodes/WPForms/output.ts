@@ -49,7 +49,7 @@ export default {
 					{
 						json: {
 						  success: true,
-							// Original request body as JSON string.
+							// Original request body as a JSON string.
 							body: JSON.stringify(request.body).replace(/\//g, '\\/'),
 							headers: request.headers,
 						},
