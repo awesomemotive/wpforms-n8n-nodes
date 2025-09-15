@@ -1,0 +1,13 @@
+{
+	"node": "n8n-nodes-wpforms.wpformsTrigger",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Trigger", "Forms"],
+	"resources": {
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/awesomemotive/wpforms-n8n-nodes"
+			}
+		]
+	}
+}
