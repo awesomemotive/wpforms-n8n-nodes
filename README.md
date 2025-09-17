@@ -16,7 +16,7 @@ You need the following installed on your development machine:
   ```
 * Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
 
-## Build and Install the Node Package 📦
+## Build and Install the Node Package
 
 ### 1. Install Dependencies
 ```bash
@@ -77,7 +77,40 @@ n8n start
 2. Look for your custom nodes in the node palette
 3. You should see "WPForms" nodes available
 
-## Development Workflow 🔧
+## Setup and Usage Instructions for WPForms Trigger Node
+
+### Prerequisites
+
+- A WordPress site with the WPForms plugin + WPForms n8n addon installed and activated.
+- An n8n instance.
+
+### Installation
+
+1.  Go to your n8n instance.
+2.  Go to **Settings > Community Nodes**.
+3.  Click **Install a community node**.
+4.  Enter `n8n-nodes-wpforms` in the **npm package name** field.
+5.  Click **Install**.
+
+### Configuration
+
+1.  In your n8n workflow, add the **WPForms Trigger** node.
+2.  Configure the node settings:
+    *   **Secret Key**: Enter a secret key. This key must match the secret key configured in your WPForms n8n addon settings. It is used to verify the integrity of the data received.
+    *   **Timestamp Skew**: Set the allowed time difference in seconds between your server and the WPForms server. The default is 300 seconds.
+    *   **Output Schema**: Choose the output format. 'Default' provides a structured JSON object, while 'Raw' provides the raw request body and headers.
+3.  The node will display a webhook URL. Copy this URL.
+4.  In the Form Builder, go to the Marketing > n8n tab.
+5.  Enable n8n integration.
+6.  Paste the webhook URL from n8n.
+7.  Copy Secret Key and paste it to the WPForms Trigger node.
+8.  Save your form settings.
+
+### Usage
+
+Now, whenever the selected form is submitted, it will trigger your n8n workflow. The form data will be available in the node's output.
+
+## Development Workflow 
 
 In Linux/MacOS or Windows using PS 7 shell:
 

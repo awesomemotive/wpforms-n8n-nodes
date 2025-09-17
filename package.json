@@ -4,13 +4,16 @@
   "description": "n8n WPForms Trigger node",
   "keywords": [
     "n8n-community-node-package",
-    "wpforms"
+    "WPForms",
+    "WordPress",
+    "form",
+    "form submission"
   ],
   "license": "MIT",
   "homepage": "",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "WPForms",
+    "email": "support@wpforms.com"
   },
   "repository": {
     "type": "git",
@@ -33,20 +36,19 @@
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
-    ],
+    "credentials": [],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/WPForms/WpformsTrigger.js"
     ]
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "@typescript-eslint/parser": "~8.32.0",
     "eslint": "^8.57.0",
     "eslint-plugin-n8n-nodes-base": "^1.16.3",
     "gulp": "^5.0.0",
+    "n8n-core": "^1.14.1",
+    "n8n-workflow": "^1.82.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.2"
   },
