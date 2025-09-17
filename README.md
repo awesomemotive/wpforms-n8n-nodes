@@ -112,14 +112,24 @@ Now, whenever the selected form is submitted, it will trigger your n8n workflow.
 
 ## Development Workflow 
 
-For ongoing development:
+In Linux/MacOS or Windows using PS 7 shell:
 
 ```bash
-# Watch for changes during development
-npm run dev
+cd /path/to/wpforms-n8n-nodes/
 
 # Build and link after changes
 npm run build && npm link
+
+# Watch for changes during development
+npm run dev
+```
+
+In your n8n instance, re-link the node and restart n8n:
+```bash
+cd ~/.n8n/custom
+
+# Re-link node and restart n8n:
+npm link n8n-nodes-wpforms && n8n start
 ```
 
 ## Testing Your Node 

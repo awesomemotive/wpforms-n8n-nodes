@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-wpforms",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n WPForms Trigger node",
   "keywords": [
     "n8n-community-node-package",
@@ -38,7 +38,7 @@
     "n8nNodesApiVersion": 1,
     "credentials": [],
     "nodes": [
-      "dist/nodes/WPForms/WpformsTrigger.js"
+      "dist/nodes/WPForms/WpformsTrigger.node.js"
     ]
   },
   "devDependencies": {
