@@ -142,6 +142,11 @@ npm run lint
 npm run lintfix
 ```
 
+## Publishing  
+
+We are publishing automatically to npm each time a tag is pushed in the repo.  
+Alongside that, a GitHub Release is also created.  
+
 ## More information
 
 Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.

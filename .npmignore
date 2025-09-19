@@ -1,2 +1,46 @@
-.DS_Store
+# Source files (only distribute compiled files)
+nodes/
+credentials/
+*.ts
+!*.d.ts
+
+# Development files
+.github/
+.eslintrc*
+.prettierrc*
+tsconfig.json
+tsconfig.tsbuildinfo
+gulpfile.js
 *.tsbuildinfo
+
+# Documentation
+PUBLISHING.md
+CODE_OF_CONDUCT.md
+
+# Development dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git/
+.gitignore
+
+# Keep the dist folder and necessary files
+!dist/
+!index.js
+!package.json
+!README.md
+!LICENSE.md
