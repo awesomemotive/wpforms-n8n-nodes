@@ -145,7 +145,16 @@ npm run lintfix
 ## Publishing  
 
 First you need to bump the version. This needs to be reflected both in the package.json & the package-lock.json.  
-Next, you need to push the change in the main branch and also create a tag starting with `v`, e.g. v0.1.3
+
+You can also do that using `npm version` - this will also create the new tag:  
+
+```bash
+npm version patch  # for bug fixes (0.1.2 → 0.1.3)
+npm version minor  # for new features (0.1.2 → 0.2.0)
+npm version major  # for breaking changes (0.1.2 → 1.0.0)
+```
+
+Next, you need to push the change in the main branch and also create/push a tag starting with `v`, e.g. v0.1.3
 
 We are publishing automatically to npm each time a tag is pushed in the repo.  
 Alongside that, a GitHub Release is also created.  
