@@ -43,7 +43,7 @@ export class WpformsTrigger implements INodeType {
 				default: '',
 				required: true,
 				description: 'The secret key used to verify the request',
-				hint: 'Copy the value from your WPForms n8n settings. <a href="https://wpforms.com/docs/n8n/">Read more</a>',
+				hint: 'Copy the value from your WPForms n8n settings. <a href="https://wpforms.com/docs/n8n-addon/?utm_campaign=plugin&utm_source=n8n&utm_medium=WPForms%20Trigger&utm_content=n8n%20Documentation&utm_locale=en_US">Read more</a>',
 			},
 			{
 				displayName: 'Output Schema',
@@ -62,7 +62,7 @@ export class WpformsTrigger implements INodeType {
 				default: 'default',
 				description: 'Choose the output format of the trigger',
 				hint: `Default: Emits 1 item with properties: <code>form, entry, fields, meta</code>.<br>
-					Raw: Emits 1 item with properties: <code>body, headers</code>. <a href="https://wpforms.com/docs/n8n/">Read more</a>`,
+					Raw: Emits 1 item with properties: <code>body, headers</code>. <a href="https://wpforms.com/docs/n8n-addon/?utm_campaign=plugin&utm_source=n8n&utm_medium=WPForms%20Trigger&utm_content=n8n%20Documentation&utm_locale=en_US">Read more</a>`,
 			},
 			{
 				displayName: 'Timestamp Skew',
