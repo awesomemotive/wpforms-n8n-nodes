@@ -40,6 +40,9 @@ export class WpformsTrigger implements INodeType {
 				displayName: 'Secret Key',
 				name: 'scrKey',
 				type: 'string',
+				typeOptions: {
+					password: true,
+				},
 				default: '',
 				required: true,
 				description: 'The secret key used to verify the request',
