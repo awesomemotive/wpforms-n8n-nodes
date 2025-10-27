@@ -26,6 +26,12 @@ export class WpformsTrigger implements INodeType {
 		},
 		inputs: [], // Trigger nodes have no inputs.
 		outputs: [NodeConnectionType.Main],
+		credentials: [
+			{
+				name: 'wpformsApi',
+				required: true,
+			},
+		],
 		webhooks: [
 			{
 				name: 'default',
@@ -36,18 +42,6 @@ export class WpformsTrigger implements INodeType {
 			},
 		],
 		properties: [
-			{
-				displayName: 'Secret Key',
-				name: 'scrKey',
-				type: 'string',
-				typeOptions: {
-					password: true,
-				},
-				default: '',
-				required: true,
-				description: 'The secret key used to verify the request',
-				hint: 'Copy the value from your WPForms n8n settings. <a href="https://wpforms.com/docs/n8n-addon/?utm_source=n8n&utm_medium=referral&utm_campaign=n8n_integration&utm_content=wpforms_trigger_docs&utm_locale=en_US">Read more</a>',
-			},
 			{
 				displayName: 'Output Schema',
 				name: 'outputSchema',
@@ -88,8 +82,11 @@ export class WpformsTrigger implements INodeType {
 		// Access the raw HTTP request from n8n's webhook context.
 		const request = this.getRequestObject();
 
+		// Get credentials
+		const credentials = await this.getCredentials('wpformsApi');
+		const secretKey = credentials.secretKey as string;
+
 		// Node parameters configured by the user in the UI
-		const secretKey = this.getNodeParameter('scrKey') as string;
 		const timestampSkew = this.getNodeParameter('timestampSkew') as number;
 		const outputSchema = this.getNodeParameter('outputSchema') as string;
 
