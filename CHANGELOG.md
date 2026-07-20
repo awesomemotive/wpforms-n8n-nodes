@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Replace removed `NodeConnectionType` enum with string literal for n8n v2.x compatibility.
+- Fix timestamp skew validation comparing milliseconds against seconds threshold (#13).
 
 ### Changed
 - Update `n8n-workflow` peer dependency from `*` to `^2.8.0` to match n8n v2.8.4.

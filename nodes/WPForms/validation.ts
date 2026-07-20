@@ -50,7 +50,7 @@ export function validateRequest(
 	const timestampInt = parseInt(timestamp, 10);
 	const timeDifference = Math.abs(now - timestampInt);
 
-	if (timeDifference > timestampSkew) {
+	if (timeDifference > timestampSkew * 1000) {
 		throwError(
 			`Timestamp is outside the allowed ${ timestampSkew }s skew.`,
 			{ now, timestampInt, timeDifference }
