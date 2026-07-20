@@ -3,7 +3,6 @@ import {
 	INodeTypeDescription,
 	IWebhookFunctions,
 	IWebhookResponseData,
-	NodeConnectionType,
 } from 'n8n-workflow';
 import { validateRequest } from './validation';
 import output from './output';
@@ -25,7 +24,7 @@ export class WpformsTrigger implements INodeType {
 			name: 'WPForms Trigger',
 		},
 		inputs: [], // Trigger nodes have no inputs.
-		outputs: [NodeConnectionType.Main],
+		outputs: ['main'],
 		webhooks: [
 			{
 				name: 'default',
