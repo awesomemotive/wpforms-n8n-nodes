@@ -8,3 +8,6 @@ yarn.lock
 .vscode/launch.json
 .idea
 .env
+
+# Local superpowers working docs (specs/plans)
+docs/superpowers/
