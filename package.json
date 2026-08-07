@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-wpforms",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "n8n WPForms Trigger node",
   "keywords": [
     "n8n-community-node-package",
@@ -10,7 +10,7 @@
     "form submission"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://wpforms.com/docs/n8n-addon/",
   "author": {
     "name": "WPForms",
     "email": "support@wpforms.com"
