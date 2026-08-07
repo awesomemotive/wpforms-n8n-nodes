@@ -1,4 +1,5 @@
 import {
+	IHookFunctions,
 	INodeType,
 	INodeTypeDescription,
 	IWebhookFunctions,
@@ -77,6 +78,32 @@ export class WpformsTrigger implements INodeType {
 				description: 'The allowed time difference in seconds between the server and the client',
 			},
 		],
+	};
+
+	/**
+	 * Webhook lifecycle methods.
+	 *
+	 * WPForms has no remote API for managing webhooks — the user pastes this
+	 * node's webhook URL into the WPForms form settings manually, so there is
+	 * nothing to create, verify, or remove on the WPForms side.
+	 *
+	 * @since 0.1.7
+	 */
+	webhookMethods = {
+		default: {
+			// Report the webhook as present so workflow activation proceeds.
+			async checkExists(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+			// Registration happens manually in WPForms; nothing to create.
+			async create(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+			// Nothing was registered remotely; nothing to delete.
+			async delete(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+		},
 	};
 
 	/**
