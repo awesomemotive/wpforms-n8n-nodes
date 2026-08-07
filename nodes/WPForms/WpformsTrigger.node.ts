@@ -3,6 +3,7 @@ import {
 	INodeTypeDescription,
 	IWebhookFunctions,
 	IWebhookResponseData,
+	NodeConnectionTypes,
 } from 'n8n-workflow';
 import { validateRequest } from './validation';
 import output from './output';
@@ -16,15 +17,17 @@ export class WpformsTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'WPForms Trigger',
 		name: 'wpformsTrigger',
+		subtitle: 'on form submission',
 		icon: 'file:sullie.svg',
 		group: ['trigger'],
 		version: 1,
+		usableAsTool: true,
 		description: 'Starts a workflow when a WPForms form is submitted',
 		defaults: {
 			name: 'WPForms Trigger',
 		},
 		inputs: [], // Trigger nodes have no inputs.
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		webhooks: [
 			{
 				name: 'default',
