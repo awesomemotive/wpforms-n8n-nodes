@@ -5,6 +5,13 @@ All notable changes to the `n8n-nodes-wpforms` package will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6] - 2026-08-07
+
+### Fixed
+- Publish to npm with provenance to satisfy n8n community-node security checks.
+- Add missing `homepage` field to `package.json`.
+- Replace unsupported codex categories with `Communication`.
+
 ## [0.1.5] - 2026-07-20
 
 ### Fixed
@@ -54,7 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configurable timestamp skew tolerance (default 300 seconds).
 - Two output modes: Default (structured JSON) and Raw (raw request body/headers).
 
-[Unreleased]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.2...v0.1.3
