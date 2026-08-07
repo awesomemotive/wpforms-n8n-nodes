@@ -26,8 +26,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       # Node 20 bundles npm 10.x; OIDC trusted publishing needs npm >= 11.5.1.
+      # Pinned to npm 11 — npm 12+ requires Node >= 22.
       - name: Update npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
 
       # Install dependencies.
       - name: Install dependencies
