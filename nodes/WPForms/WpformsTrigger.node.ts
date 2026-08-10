@@ -1,8 +1,10 @@
 import {
+	IHookFunctions,
 	INodeType,
 	INodeTypeDescription,
 	IWebhookFunctions,
 	IWebhookResponseData,
+	NodeConnectionTypes,
 } from 'n8n-workflow';
 import { validateRequest } from './validation';
 import output from './output';
@@ -16,15 +18,17 @@ export class WpformsTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'WPForms Trigger',
 		name: 'wpformsTrigger',
-		icon: 'file:sullie.svg',
+		subtitle: 'on form submission',
+		icon: { light: 'file:sullie.svg', dark: 'file:sullie.svg' },
 		group: ['trigger'],
 		version: 1,
+		usableAsTool: true,
 		description: 'Starts a workflow when a WPForms form is submitted',
 		defaults: {
 			name: 'WPForms Trigger',
 		},
 		inputs: [], // Trigger nodes have no inputs.
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		webhooks: [
 			{
 				name: 'default',
@@ -74,6 +78,32 @@ export class WpformsTrigger implements INodeType {
 				description: 'The allowed time difference in seconds between the server and the client',
 			},
 		],
+	};
+
+	/**
+	 * Webhook lifecycle methods.
+	 *
+	 * WPForms has no remote API for managing webhooks — the user pastes this
+	 * node's webhook URL into the WPForms form settings manually, so there is
+	 * nothing to create, verify, or remove on the WPForms side.
+	 *
+	 * @since 0.1.7
+	 */
+	webhookMethods = {
+		default: {
+			// Report the webhook as present so workflow activation proceeds.
+			async checkExists(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+			// Registration happens manually in WPForms; nothing to create.
+			async create(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+			// Nothing was registered remotely; nothing to delete.
+			async delete(this: IHookFunctions): Promise<boolean> {
+				return true;
+			},
+		},
 	};
 
 	/**
