@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Add `subtitle`, `usableAsTool`, and webhook lifecycle methods to the trigger node to satisfy n8n community-node scanner rules.
 - Use the `NodeConnectionTypes.Main` constant instead of the `"main"` string literal in node outputs.
+- Declare the node icon in themed `{ light, dark }` form (the full-color mascot renders well on both themes).
 
 ## [0.1.6] - 2026-08-07
 
