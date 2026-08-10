@@ -5,6 +5,11 @@ All notable changes to the `n8n-nodes-wpforms` package will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.8] - 2026-08-10
+
+### Fixed
+- Revert the themed `{ light, dark }` icon declaration. The n8n scanner's `icon-validation` rule rejects light and dark pointing at the same file, and no dark-theme mascot asset exists yet. A single-file icon raises only a non-blocking warning.
+
 ## [0.1.7] - 2026-08-10
 
 ### Fixed
@@ -68,7 +73,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configurable timestamp skew tolerance (default 300 seconds).
 - Two output modes: Default (structured JSON) and Raw (raw request body/headers).
 
-[Unreleased]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.8...HEAD
+[0.1.8]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/awesomemotive/wpforms-n8n-nodes/compare/v0.1.4...v0.1.5

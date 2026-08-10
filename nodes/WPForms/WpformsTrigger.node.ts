@@ -19,7 +19,7 @@ export class WpformsTrigger implements INodeType {
 		displayName: 'WPForms Trigger',
 		name: 'wpformsTrigger',
 		subtitle: 'on form submission',
-		icon: { light: 'file:sullie.svg', dark: 'file:sullie.svg' },
+		icon: 'file:sullie.svg',
 		group: ['trigger'],
 		version: 1,
 		usableAsTool: true,
