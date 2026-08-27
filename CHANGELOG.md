@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add missing `homepage` field to `package.json`.
 - Replace unsupported codex categories with `Communication`.
 
+### Changed
+- Update `n8n-workflow` peer dependency from `*` to `^2.8.0` to match n8n v2.8.4.
+
 ## [0.1.5] - 2026-07-20
 
 ### Fixed
